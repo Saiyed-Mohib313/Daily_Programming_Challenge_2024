@@ -1,0 +1,51 @@
+import java.util.Scanner;
+public class _73LeaderInArray {
+
+     //optimize Approach:-
+
+     static void optimizeLeader(int  a[]){
+        int curr_leader =0;
+
+        curr_leader =a[a.length-1];
+            System.err.println(curr_leader);
+
+            for(int i=a.length-2 ; i> 0; i--){
+                if(a[i] > curr_leader){
+                    curr_leader = a[i];
+                    System.out.println(curr_leader);
+                }
+            }
+
+     }
+
+ //Naive Approach
+
+    static void leader(int a[]) {
+        for (int i = 0; i < a.length; i++) {
+            boolean isleader = true;
+
+            for (int j = i + 1; j < a.length; j++) {
+                if (a[j] >= a[i]) {
+                    isleader = false;
+                    break;
+                }
+            }
+            if (isleader == true) {
+                System.out.println(a[i] + "  ");
+            }
+        }
+    }
+
+    public static void main(String args[]) {
+        Scanner sc =new Scanner(System.in);
+       int n =sc.nextInt();
+       int a[] =new int[n];
+
+       for (int i = 0; i < a.length; i++) {
+           a[i] =sc.nextInt();
+       }
+        //leader(a);
+        optimizeLeader(a);
+
+    }
+}
