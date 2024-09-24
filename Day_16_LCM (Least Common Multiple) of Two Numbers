@@ -1,0 +1,44 @@
+import java.util.Scanner;
+
+public class FindLCM {
+
+    // Basic approach
+    static int findLCM(int a, int b) {
+        int res = Math.max(a, b);
+        while (true) {
+            if (res % a == 0 && res % b == 0) { 
+                break; 
+            }
+            res++; 
+        }
+        return res; 
+    }
+
+    // This is more efficient for finding LCM via GCD
+    static int findGCD(int a, int b) {
+        while (a != 0 && b != 0) { 
+            if (a > b) {
+                a = a % b;
+            } else {
+                b = b % a; 
+            }
+        }
+        return (a != 0) ? a : b;
+    }
+
+    // Optimal approach to find LCM using the formula: LCM(a, b) = (a * b) / GCD(a, b)
+    // This is much faster and efficient for large numbers
+    static int findADVLCM(int a, int b) {
+        return (a * b) / findGCD(a, b);
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter two integers to find their LCM:");
+        int a = sc.nextInt();
+        int b = sc.nextInt();
+
+        // Call the optimal approach to calculate the LCM
+        System.out.println("The LCM of " + a + " and " + b + " is: " + findADVLCM(a, b)); 
+    }
+}
