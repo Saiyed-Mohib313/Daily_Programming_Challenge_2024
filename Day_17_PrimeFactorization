@@ -1,0 +1,34 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Day_17_PrimeFactorization {
+
+    public static List<Integer> primeFactorization(int n) {
+        List<Integer> factors = new ArrayList<>();
+
+        for (int i = 2; i * i <= n; i++) {
+            while (n % i == 0) {
+                factors.add(i);
+                n /= i;
+            }
+        }
+
+        if (n > 1) {
+            factors.add(n);
+        }
+
+        return factors;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter a number to find its prime factorization:");
+        int n = sc.nextInt();
+
+        List<Integer> result = primeFactorization(n);
+        System.out.println("Prime factors of " + n + " are: " + result);
+
+    }
+}
