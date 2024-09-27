@@ -1,0 +1,49 @@
+import java.util.Scanner;
+import java.util.Stack;
+
+public class Day_19_PostfixEvaluation {
+
+    public static int evaluatePostfix(String expression) {
+        Stack<Integer> stack = new Stack<>();
+        String[] tokens = expression.split(" ");
+
+        for (String token : tokens) {
+            if (isOperator(token)) {
+                int b = stack.pop();
+                int a = stack.pop();
+                stack.push(applyOperator(a, b, token));
+            } else {
+                stack.push(Integer.parseInt(token));
+            }
+        }
+        return stack.pop();
+    }
+
+    public static boolean isOperator(String token) {
+        return token.equals("+") || token.equals("-") || token.equals("*") || token.equals("/");
+    }
+
+    public static int applyOperator(int a, int b, String operator) {
+        switch (operator) {
+            case "+":
+                return a + b;
+            case "-":
+                return a - b;
+            case "*":
+                return a * b;
+            case "/":
+                return a / b;  // Integer division
+            default:
+                throw new IllegalArgumentException("Invalid operator: " + operator);
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the postfix expression to evaluate:");
+        String expression = sc.nextLine();
+        int result = evaluatePostfix(expression);
+        System.out.println("The result of the postfix expression is: " + result);
+        sc.close();
+    }
+}
