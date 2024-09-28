@@ -1,0 +1,44 @@
+import java.util.Scanner;
+import java.util.Stack;
+
+public class Day_20_SortStackRecursion {
+
+    public static void sortStack(Stack<Integer> stack) {
+        if (!stack.isEmpty()) {
+            int temp = stack.pop();
+            sortStack(stack);
+            insertInSortedOrder(stack, temp);
+        }
+    }
+
+    private static void insertInSortedOrder(Stack<Integer> stack, int element) {
+        if (stack.isEmpty() || stack.peek() <= element) {
+            stack.push(element);
+        } else {
+            int temp = stack.pop();
+            insertInSortedOrder(stack, element);
+            stack.push(temp);
+        }
+    }
+
+    public static void main(String[] args) {
+        Stack<Integer> stack = new Stack<>();
+        Scanner sc = new Scanner(System.in);
+        
+        System.out.println("Enter the elements of the stack (type 'done' to finish):");
+        
+        while (sc.hasNext()) {
+            if (sc.hasNextInt()) {
+                stack.push(sc.nextInt());
+            } else if (sc.next().equalsIgnoreCase("done")) {
+                break;
+            }
+        }
+
+        System.out.println("Original stack: " + stack);
+        sortStack(stack);
+        System.out.println("Sorted stack: " + stack);
+        
+        sc.close();
+    }
+}
