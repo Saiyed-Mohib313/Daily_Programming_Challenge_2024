@@ -1,0 +1,49 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class Day_22_FirstElementToRepeatKTimes {
+
+    public static int firstElementKTimes(int[] arr, int k) {
+        Map<Integer, Integer> countMap = new HashMap<>();
+        
+        // Count the occurrences of each element
+        for (int num : arr) {
+            countMap.put(num, countMap.getOrDefault(num, 0) + 1);
+        }
+
+        // Find the first element that occurs exactly k times
+        for (int num : arr) {
+            if (countMap.get(num) == k) {
+                return num;
+            }
+        }
+
+        // If no element is found that occurs exactly k times
+        return -1;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // Input the size of the array
+        System.out.println("Enter the size of the array:");
+        int n = sc.nextInt();
+
+        // Input the array elements
+        int[] arr = new int[n];
+        System.out.println("Enter the elements of the array:");
+        for (int i = 0; i < n; i++) {
+            arr[i] = sc.nextInt();
+        }
+
+        // Input k
+        System.out.println("Enter the value of k:");
+        int k = sc.nextInt();
+
+        // Get the result
+        int result = firstElementKTimes(arr, k);
+        System.out.println("The first element to appear exactly " + k + " times is: " + result);
+
+    }
+}
