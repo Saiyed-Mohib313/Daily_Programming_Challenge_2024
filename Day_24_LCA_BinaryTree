@@ -1,0 +1,92 @@
+import java.util.Scanner;
+
+// Definition for a binary tree node.
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode(int x) {
+        val = x;
+        left = right = null;
+    }
+}
+
+public class Day_24_LCA_BinaryTree {
+
+    // Function to find LCA of two given nodes p and q
+    public static TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null || root == p || root == q) {
+            return root;
+        }
+
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+
+        if (left != null && right != null) {
+            return root;
+        }
+        
+        return left != null ? left : right;
+    }
+
+    // Helper function to insert nodes in the tree (level order insertion)
+    public static TreeNode insertLevelOrder(int[] arr, int i) {
+        if (i < arr.length) {
+            if (arr[i] == -1) {
+                return null; // -1 represents a null node
+            }
+            TreeNode root = new TreeNode(arr[i]);
+            root.left = insertLevelOrder(arr, 2 * i + 1);
+            root.right = insertLevelOrder(arr, 2 * i + 2);
+            return root;
+        }
+        return null;
+    }
+
+    // Helper function to find a node by value
+    public static TreeNode findNode(TreeNode root, int val) {
+        if (root == null) return null;
+        if (root.val == val) return root;
+        TreeNode left = findNode(root.left, val);
+        if (left != null) return left;
+        return findNode(root.right, val);
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // Input the binary tree as an array (level order)
+        System.out.println("Enter the binary tree elements (use -1 for null):");
+        String[] inputArr = sc.nextLine().split(" ");
+        int[] treeArray = new int[inputArr.length];
+
+        for (int i = 0; i < inputArr.length; i++) {
+            treeArray[i] = Integer.parseInt(inputArr[i]);
+        }
+
+        // Input the two distinct nodes p and q
+        System.out.println("Enter the value of node p:");
+        int pValue = sc.nextInt();
+        System.out.println("Enter the value of node q:");
+        int qValue = sc.nextInt();
+
+        // Build the tree
+        TreeNode root = insertLevelOrder(treeArray, 0);
+
+        // Find the nodes for p and q
+        TreeNode p = findNode(root, pValue);
+        TreeNode q = findNode(root, qValue);
+
+        // Get the LCA
+        TreeNode lca = lowestCommonAncestor(root, p, q);
+
+        // Output the result
+        if (lca != null) {
+            System.out.println("The lowest common ancestor of " + pValue + " and " + qValue + " is: " + lca.val);
+        } else {
+            System.out.println("No common ancestor found.");
+        }
+
+    }
+}
