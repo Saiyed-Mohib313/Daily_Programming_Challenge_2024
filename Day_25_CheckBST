@@ -1,0 +1,67 @@
+import java.util.Scanner;
+
+// Definition for a binary tree node.
+class TreeNode {
+    int val;
+    TreeNode left, right;
+
+    TreeNode(int x) {
+        val = x;
+        left = right = null;
+    }
+}
+
+public class Day_25_CheckBST {
+
+    // Function to check if a binary tree is a valid BST
+    public static boolean isValidBST(TreeNode root) {
+        return isValidBSTHelper(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+
+    // Helper function to validate the BST property
+    private static boolean isValidBSTHelper(TreeNode node, long min, long max) {
+        if (node == null) {
+            return true;
+        }
+        if (node.val <= min || node.val >= max) {
+            return false;
+        }
+        return isValidBSTHelper(node.left, min, node.val) && isValidBSTHelper(node.right, node.val, max);
+    }
+
+    // Helper function to insert nodes in the tree (level order insertion)
+    public static TreeNode insertLevelOrder(int[] arr, int i) {
+        if (i < arr.length) {
+            if (arr[i] == -1) {
+                return null; // -1 represents a null node
+            }
+            TreeNode root = new TreeNode(arr[i]);
+            root.left = insertLevelOrder(arr, 2 * i + 1);
+            root.right = insertLevelOrder(arr, 2 * i + 2);
+            return root;
+        }
+        return null;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // Input the binary tree as an array (level order)
+        System.out.println("Enter the binary tree elements (use -1 for null):");
+        String[] inputArr = sc.nextLine().split(" ");
+        int[] treeArray = new int[inputArr.length];
+
+        for (int i = 0; i < inputArr.length; i++) {
+            treeArray[i] = Integer.parseInt(inputArr[i]);
+        }
+
+        // Build the tree
+        TreeNode root = insertLevelOrder(treeArray, 0);
+
+        // Check if the tree is a valid BST
+        boolean isBST = isValidBST(root);
+
+        // Output the result (true or false)
+        System.out.println(isBST);
+    }
+}
