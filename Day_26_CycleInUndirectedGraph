@@ -1,0 +1,69 @@
+import java.util.*;
+
+public class Day_26_CycleInUndirectedGraph {
+
+    // Function to detect a cycle in an undirected graph
+    public static boolean hasCycle(int V, List<List<Integer>> adj) {
+        boolean[] visited = new boolean[V];
+        
+        // Check each component of the graph
+        for (int i = 0; i < V; i++) {
+            if (!visited[i]) {
+                if (dfs(i, -1, visited, adj)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    // DFS helper function to detect cycle
+    public static boolean dfs(int node, int parent, boolean[] visited, List<List<Integer>> adj) {
+        visited[node] = true;
+
+        // Traverse all adjacent nodes
+        for (int neighbor : adj.get(node)) {
+            if (!visited[neighbor]) {
+                if (dfs(neighbor, node, visited, adj)) {
+                    return true;
+                }
+            } else if (neighbor != parent) {
+                return true; // A cycle is found
+            }
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // Input in the specified format
+        System.out.println("Input: V = ");
+        int V = sc.nextInt();
+        System.out.println("E = ");
+        int E = sc.nextInt();
+
+        // Create adjacency list for the graph
+        List<List<Integer>> adj = new ArrayList<>();
+        for (int i = 0; i < V; i++) {
+            adj.add(new ArrayList<>());
+        }
+
+        // Input the edges in the format of a list
+        System.out.println("Edges = ");
+        for (int i = 0; i < E; i++) {
+            int u = sc.nextInt();
+            int v = sc.nextInt();
+            adj.get(u).add(v);
+            adj.get(v).add(u); // Since it's an undirected graph
+        }
+
+        // Check if the graph contains a cycle
+        boolean containsCycle = hasCycle(V, adj);
+
+        // Output the result in the required format
+        System.out.println("Output: " + (containsCycle ? "true" : "false"));
+
+        sc.close();
+    }
+}
