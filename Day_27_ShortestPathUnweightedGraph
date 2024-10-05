@@ -1,0 +1,73 @@
+import java.util.*;
+
+public class Day_27_ShortestPathUnweightedGraph {
+
+    // Function to find the shortest path in an unweighted graph
+    public static int shortestPath(int V, List<List<Integer>> adj, int start, int end) {
+        boolean[] visited = new boolean[V];
+        int[] distance = new int[V];
+        Arrays.fill(distance, -1); // Initialize all distances as -1
+        
+        Queue<Integer> queue = new LinkedList<>();
+        visited[start] = true;
+        queue.add(start);
+        distance[start] = 0; // Distance from start to start is 0
+
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+
+            // Traverse adjacent nodes
+            for (int neighbor : adj.get(node)) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    distance[neighbor] = distance[node] + 1; // Increment distance
+                    queue.add(neighbor);
+                    
+                    // If we reach the end node, return the distance
+                    if (neighbor == end) {
+                        return distance[neighbor];
+                    }
+                }
+            }
+        }
+
+        // If no path exists between start and end, return -1
+        return -1;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // Input format
+        System.out.println("Input: V = ");
+        int V = sc.nextInt();
+        System.out.println("Edges = ");
+        
+        // Create adjacency list for the graph
+        List<List<Integer>> adj = new ArrayList<>();
+        for (int i = 0; i < V; i++) {
+            adj.add(new ArrayList<>());
+        }
+
+        // Input edges
+        int edgeCount = sc.nextInt(); // Input number of edges
+        for (int i = 0; i < edgeCount; i++) {
+            int u = sc.nextInt();
+            int v = sc.nextInt();
+            adj.get(u).add(v);
+            adj.get(v).add(u); // Since it's an undirected graph
+        }
+
+        // Input start and end
+        System.out.println("start = ");
+        int start = sc.nextInt();
+        System.out.println("end = ");
+        int end = sc.nextInt();
+
+        // Find the shortest path and print the output
+        int result = shortestPath(V, adj, start, end);
+        System.out.println("Output: " + result);
+
+    
+    }
+}
