@@ -1,0 +1,36 @@
+import java.util.Scanner;
+import java.util.Arrays;
+
+public class Day_30_CoinChange {
+
+    public static int coinChange(int[] coins, int amount) {
+        int max = amount + 1;
+        int[] dp = new int[amount + 1];
+        Arrays.fill(dp, max);
+        dp[0] = 0;
+        
+        for (int i = 1; i <= amount; i++) {
+            for (int coin : coins) {
+                if (i - coin >= 0) {
+                    dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+                }
+            }
+        }
+        
+        return dp[amount] == max ? -1 : dp[amount];
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("Enter the coin denominations separated by spaces: ");
+        String[] input = scanner.nextLine().split(" ");
+        int[] coins = Arrays.stream(input).mapToInt(Integer::parseInt).toArray();
+        
+        System.out.print("Enter the total amount: ");
+        int amount = scanner.nextInt();
+        
+        int result = coinChange(coins, amount);
+        System.out.println("Minimum number of coins: " + result);
+    }
+}
